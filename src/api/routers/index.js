@@ -9,6 +9,7 @@ var router = new Router();
 // const loginRouter = require('./login');
 const listRouter = require('./list');
 const addgoodsRouter = require('./addgoods');
+const uploadRouter = require('./upload');
 
 router.use(koaBody({
     // 支持formdata
@@ -21,11 +22,11 @@ router.use(koaBody({
         keepExtensions: true,
         // 改文件名
         onFileBegin(filename, file) {
-            // filename: 上传文件的原始名
+
+            // filename: file.name上传文件的原始名
             // file:文件信息对象
             //   * path:
-
-            // file.path = './uploads/'+filename
+            // file.path = 'uploads/' + filename
         }
     }
 }));
@@ -33,5 +34,6 @@ router.use(koaBody({
 // router.use('/login', loginRouter.routes())
 router.use('/list', listRouter.routes())
 router.use('/addgoods', addgoodsRouter.routes())
+router.use('/upload', uploadRouter.routes())
 
 module.exports = router;

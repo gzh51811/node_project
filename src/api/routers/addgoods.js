@@ -10,7 +10,14 @@ const router = new Router();
  * ctx
  */
 router.get('/', async(ctx, next) => {
-    console.log(ctx.query)
+    let { name, shop, priceOld, priceNow, classify, stock, time, quality, state, logo, description, insert } = ctx.query
+    if (insert == 'true') {
+        let data = { name, shop, priceOld, priceNow, classify, stock, time, quality, state, logo, description };
+        let res = await db.insert('goods', data);
+        ctx.body = res;
+    }
+
 })
+
 
 module.exports = router;

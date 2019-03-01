@@ -11,7 +11,11 @@ const app = new Koa();
 // 创建静态资源服务
 app.use(static('./'));
 
+app.use(static('./uploads'));
+
 app.use(static('./html'));
+
+
 
 app.use(routers.routes());
 

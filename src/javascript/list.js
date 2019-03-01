@@ -49,20 +49,22 @@ jQuery(function($) {
                     }, {
                         field: '_id',
                         title: 'ID',
-                        width: 150,
+                        width: 120,
                         fixed: 'left',
                     }, {
                         field: 'name',
                         title: '商品名称',
-                        width: 150
+                        width: 120
                     }, {
                         field: 'logo',
                         title: '商品图片',
-                        minWidth: 50
+                        templet: '<div><img src="{{d.logo}}" style="height:100%;"></div>',
+                        // style: 'height:100px;',
+                        minWidth: 100
                     }, {
-                        field: 'classify',
+                        field: 'shop',
                         title: '店铺',
-                        width: 150,
+                        width: 90,
                         sort: true
                     }, {
                         field: 'priceOld',
@@ -72,7 +74,12 @@ jQuery(function($) {
                     }, {
                         field: 'priceNow',
                         title: '现价',
-                        width: 100,
+                        width: 80,
+                        sort: true,
+                    }, {
+                        field: 'classify',
+                        title: '分类',
+                        width: 80,
                         sort: true,
                     }, {
                         field: 'stock',
@@ -80,15 +87,20 @@ jQuery(function($) {
                         width: 80,
                         sort: true
                     }, {
-                        field: 'state',
-                        title: '状态',
-                        width: 80,
-                        sort: true
-                    }, {
                         field: 'time',
                         title: '上架时间',
                         width: 100,
                         sort: true,
+                    }, {
+                        field: 'quality',
+                        title: '属性',
+                        width: 80,
+                        sort: true
+                    }, {
+                        field: 'state',
+                        title: '状态',
+                        width: 80,
+                        sort: true
                     }, {
                         fixed: 'right',
                         width: 165,
