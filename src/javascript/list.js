@@ -106,6 +106,7 @@ jQuery(function($) {
             switch (obj.event) {
                 case 'add':
                     layer.msg('添加');
+                    location.href = '../html/addgoods.html';
                     break;
                 case 'update':
                     if (data.length === 0) {
