@@ -117,8 +117,12 @@ jQuery(function($) {
                 data = checkStatus.data; //获取选中的数据
             switch (obj.event) {
                 case 'add':
-                    layer.msg('添加');
-                    location.href = '../html/addgoods.html';
+                    layer.confirm("确认到添加商品页面吗！", {
+                        title: "确认提示"
+                    }, function(index) {  
+                        location.href = './addgoods.html';
+                    });
+
                     break;
                 case 'update':
                     if (data.length === 0) {
@@ -133,37 +137,42 @@ jQuery(function($) {
                     if (data.length === 0) {
                         layer.msg('请选择一行');
                     } else {
-                        layer.msg('删除');
-                        // 获取所选的商品的id，并且组成数组
-                        let deArr = data.map((item, index) => {
-                                return item._id
-                            }).join(",").split(',')
-                            //转成json字符串
-                        deArr = JSON.stringify(deArr)
+                        layer.confirm("确认要删除所选的商品吗！", {
+                            title: "确认提示"
+                        }, function(index) {  
+                            // 获取所选的商品的id，并且组成数组
+                            let deArr = data.map((item, index) => {
+                                    return item._id
+                                }).join(",").split(',')
+                                //转成json字符串
+                            deArr = JSON.stringify(deArr);
+                            //向服务端发送删除指令
+                            $.ajax({
+                                type: "GET",
+                                url: "/list",
+                                data: {
+                                    deArr,
+                                    dele: true
+                                },
+                                traditional: true,
+                                success(data) {
+                                    layer.closeAll('loading');
 
-                        //向服务端发送删除指令
-                        $.ajax({
-                            type: "GET",
-                            url: "/list",
-                            data: {
-                                deArr,
-                                dele: true
-                            },
-                            traditional: true,
-                            success(data) {
-                                layer.closeAll('loading');
-
-                                // console.log(data)
-                                //返回200则删除成功，反之删除失败
-                                if (data == 200) {
-                                    parent.layer.msg('删除成功！', { icon: 6, time: 2000, shade: 0.2 }); //一闪而过的提示效果
-                                    location.reload(true);
-                                } else {
-                                    parent.layer.msg('删除失败！', { icon: 5, time: 3000, shade: 0.2 });
+                                    // console.log(data)
+                                    //返回200则删除成功，反之删除失败
+                                    if (data == 200) {
+                                        parent.layer.msg('删除成功！', { icon: 6, time: 2000, shade: 0.2 }); //一闪而过的提示效果
+                                        location.reload(true);
+                                    } else {
+                                        parent.layer.msg('删除失败！', { icon: 5, time: 3000, shade: 0.2 });
+                                    }
                                 }
-                            }
 
+                            });
                         });
+
+
+
 
                     }
                     break;

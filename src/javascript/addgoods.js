@@ -60,7 +60,7 @@
                         if (data.ok == 1) {
                             parent.layer.msg('添加成功！', { icon: 6, time: 2000, shade: 0.2 });
                             $("#addGoodsForm")[0].reset();
-                            $("#logoImg").attr("src", "");
+                            $("#logoImg").attr("src", "./01.png");
                             $('#logoImg').attr("data-url", "")
                         } else {
                             parent.layer.msg('添加失败！', { icon: 5, time: 3000, shade: 0.2 });
