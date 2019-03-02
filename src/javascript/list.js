@@ -130,7 +130,14 @@ jQuery(function($) {
                     } else if (data.length > 1) {
                         layer.msg('只能同时编辑一个');
                     } else {
-                        layer.alert('编辑 [id]：' + checkStatus.data[0].id);
+                        layer.confirm('真的要编辑该商品吗！', function(index) {
+                            //关闭弹窗
+                            layer.close(layer.index);
+
+                            //跳转传id
+                            location.href = `./editgoods.html?_id=${checkStatus.data[0]._id}`;
+
+                        });
                     }
                     break;
                 case 'delete':
@@ -161,8 +168,10 @@ jQuery(function($) {
                                     // console.log(data)
                                     //返回200则删除成功，反之删除失败
                                     if (data == 200) {
-                                        parent.layer.msg('删除成功！', { icon: 6, time: 2000, shade: 0.2 }); //一闪而过的提示效果
-                                        location.reload(true);
+                                        parent.layer.msg('删除成功！', { icon: 6, time: 2000, shade: 0.2 }, function(index) {
+                                            //一闪而过的提示效果
+                                            location.reload(true);
+                                        });
                                     } else {
                                         parent.layer.msg('删除失败！', { icon: 5, time: 3000, shade: 0.2 });
                                     }
@@ -212,12 +221,16 @@ jQuery(function($) {
                     layer.close(index); //关闭弹框
                 });
             } else if (layEvent === 'edit') {
-                layer.msg('编辑操作');
+                layer.confirm('真的要编辑该商品吗！', function(index) {
+                    //关闭弹窗
+                    layer.close(layer.index);
+
+                    //跳转传id
+                    location.href = `./editgoods.html?_id=${data._id}`;
+
+                });
             }
         });
-
-
-
 
 
         //分页

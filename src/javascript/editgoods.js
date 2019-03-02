@@ -1,4 +1,69 @@
 (() => {
+    //获取URL里面的参数值
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg); //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
+    }
+    //拿到id参数
+    let _id = getUrlParam("_id");
+
+    let Alter = () => {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    type: 'GET',
+                    url: '/editgoods',
+                    data: {
+                        _id,
+                    },
+                    success(data) {
+                        resolve(data);
+                    }
+                });
+            });
+        }
+        (async() => {
+            // 赋值获取到的值
+            let data = await Alter();
+            $('.name').val(data[0].name)
+                //商品分类
+            $('.layui-select-title .layui-input').val(data[0].classify)
+            $('.description').val(data[0].description)
+            $('.priceNow').val(data[0].priceNow)
+            $('.priceOld').val(data[0].priceOld)
+            $('.shop').val(data[0].shop)
+            $('.stock').val(data[0].stock)
+            $('.time').val(data[0].time)
+                //商品图片
+            $('#logoImg').attr("data-url", data[0].logo)
+            $('#logoImg').attr("src", data[0].logo)
+                //商品属性
+            if (data[0].quality.indexOf('热卖') >= 0) {
+                $('#remai').next().addClass("layui-form-checked")
+                $('#remai').attr("checked", true)
+            }
+            if (data[0].quality.indexOf('推荐') >= 0) {
+                $('#tuijian').next().addClass("layui-form-checked")
+                $('#tuijian').attr("checked", true)
+            }
+            if (data[0].quality.indexOf('促销') >= 0) {
+                $('#cuxiao').next().addClass("layui-form-checked")
+                $('#cuxiao').attr("checked", true)
+            }
+            // 商品状态
+            if (data[0].state == '上架') {
+
+                // layui-form-onswitch
+                $('#state').next().addClass("layui-form-onswitch");
+                $('#state').attr("checked", true)
+            }
+        })();
+
+
+
+
+
     //Demo
     layui.use(['form', 'upload', 'laydate'], function() {
         var form = layui.form;
@@ -8,13 +73,16 @@
             // layer.msg(JSON.stringify(data.field));
 
 
-            layer.confirm("确认要添加吗！", {
-                title: "添加确认"
+            layer.confirm("确认要修改数据吗！", {
+                title: "修改确认"
             }, function(index) {    
                 // 拿到图片地址
                 data.field.file = $('#logoImg').attr("data-url")
                 var res = data.field
-                    //关闭弹窗
+                data.field.classify = $('.layui-select-title .layui-input').val()
+                    // id
+                data.field._id = _id;
+                //关闭弹窗
                 layer.close(layer.index);
                 //定义一个商品属性的数组
                 let quality = [];
@@ -38,11 +106,14 @@
                     res.state = "下架"
                 }
 
+                console.log(res)
+
                 //向服务端发送添加指令
                 $.ajax({
                     type: "GET",
-                    url: "/addgoods",
+                    url: "/editgoods",
                     data: {
+                        _id,
                         name: res.name,
                         shop: res.shop,
                         priceOld: res.priceOld,
@@ -54,22 +125,23 @@
                         state: res.state,
                         logo: res.file,
                         description: res.description,
-                        insert: true
+                        update: true
                     },
                     success(data) {
+                        console.log(data)
                         if (data.ok == 1) {
-                            parent.layer.msg('添加成功！', { icon: 6, time: 2000, shade: 0.2 }, function(index) {
-                                $("#addGoodsForm")[0].reset();
-                                $("#logoImg").attr("src", "./01.png");
-                                $('#logoImg').attr("data-url", "")
+                            parent.layer.msg('修改成功！', { icon: 6, time: 2000, shade: 0.2 }, function(index) {
+                                location.href = './list.html';
                             });
-
+                            // ';
                         } else {
-                            parent.layer.msg('添加失败！', { icon: 5, time: 3000, shade: 0.2 });
+                            parent.layer.msg('修改失败！', { icon: 5, time: 3000, shade: 0.2 });
                         }
                     }
 
                 });
+
+
             }); 
 
             return false;
@@ -131,9 +203,6 @@
             }
         });
 
-
-
-
         var laydate = layui.laydate;
 
         //日期
@@ -145,4 +214,4 @@
         });
 
     });
-})()
+})();
