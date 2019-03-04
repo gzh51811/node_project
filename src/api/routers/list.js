@@ -10,7 +10,7 @@ const router = new Router();
  * ctx
  */
 router.get('/', async(ctx, next) => {
-    let { _id, dele, deArr } = ctx.query;
+    let { _id, dele, deArr, page, limit } = ctx.query;
     if (dele == 'true') {
         if (_id) {
             // 删除商品
@@ -35,10 +35,12 @@ router.get('/', async(ctx, next) => {
     } else {
         //查询商品
         var res = await db.find('goods', {});
+        //0  10  // 10  20 //20  30
+        let data = res.slice((page - 1) * limit, page * limit);
         res = {
             code: 0,
-            count: 1000,
-            data: res,
+            count: res.length,
+            data: data,
             msg: ""
         }
         ctx.body = res;

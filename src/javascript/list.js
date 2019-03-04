@@ -33,7 +33,7 @@ jQuery(function($) {
         //执行一个 table 实例
         table.render({
             elem: '#demo',
-            height: 420,
+            height: 520,
             url: '/list', //数据接口
 
             title: '用户表',
@@ -64,43 +64,35 @@ jQuery(function($) {
                     }, {
                         field: 'shop',
                         title: '店铺',
-                        width: 90,
-                        sort: true
+                        width: 90
                     }, {
                         field: 'priceOld',
                         title: '原价',
-                        width: 80,
-                        sort: true,
+                        width: 80
                     }, {
                         field: 'priceNow',
                         title: '现价',
-                        width: 80,
-                        sort: true,
+                        width: 80
                     }, {
                         field: 'classify',
                         title: '分类',
-                        width: 80,
-                        sort: true,
+                        width: 80
                     }, {
                         field: 'stock',
                         title: '数量',
-                        width: 80,
-                        sort: true
+                        width: 80
                     }, {
                         field: 'time',
                         title: '上架时间',
-                        width: 100,
-                        sort: true,
+                        width: 100
                     }, {
                         field: 'quality',
                         title: '属性',
-                        width: 80,
-                        sort: true
+                        width: 80
                     }, {
                         field: 'state',
                         title: '状态',
-                        width: 80,
-                        sort: true
+                        width: 80
                     }, {
                         fixed: 'right',
                         width: 165,
@@ -229,25 +221,6 @@ jQuery(function($) {
                     location.href = `./editgoods.html?_id=${data._id}`;
 
                 });
-            }
-        });
-
-
-        //分页
-        laypage.render({
-            elem: 'pageDemo' //分页容器的id
-                ,
-            count: 100 //总页数
-                ,
-            skin: '#1E9FFF' //自定义选中色值
-                //,skip: true //开启跳页
-                ,
-            jump: function(obj, first) {
-                if (!first) {
-                    layer.msg('第' + obj.curr + '页', {
-                        offset: 'b'
-                    });
-                }
             }
         });
 
