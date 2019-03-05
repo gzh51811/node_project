@@ -29,16 +29,18 @@ jQuery(function($) {
         //         tips: 1
         //     });
         // });
-
+        // function getPicture(p) {
+        //     return '<img src=' + p.logo + ' style="height:100%;">';
+        // }
         //执行一个 table 实例
         table.render({
             elem: '#demo',
-            height: 520,
+            height: 516,
             url: '/list', //数据接口
 
             title: '用户表',
             page: true, //开启分页
-
+            id: 'idTest',
             toolbar: 'default', //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
 
             cols: [
@@ -49,22 +51,25 @@ jQuery(function($) {
                     }, {
                         field: '_id',
                         title: 'ID',
-                        width: 120,
+                        width: 150,
                         fixed: 'left',
                     }, {
                         field: 'name',
                         title: '商品名称',
-                        width: 120
+                        width: 150
                     }, {
                         field: 'logo',
                         title: '商品图片',
-                        templet: '<div><img src="{{d.logo}}" style="height:100%;"></div>',
                         // style: 'height:100px;',
-                        minWidth: 100
+                        templet: function(p) {
+                            return '<img src=' + p.logo + ' style="height:100%;">';
+                        },
+                        align: 'center',
+                        minWidth: 50
                     }, {
                         field: 'shop',
                         title: '店铺',
-                        width: 90
+                        width: 100
                     }, {
                         field: 'priceOld',
                         title: '原价',
@@ -76,7 +81,7 @@ jQuery(function($) {
                     }, {
                         field: 'classify',
                         title: '分类',
-                        width: 80
+                        width: 90
                     }, {
                         field: 'stock',
                         title: '数量',
@@ -84,7 +89,7 @@ jQuery(function($) {
                     }, {
                         field: 'time',
                         title: '上架时间',
-                        width: 100
+                        width: 110
                     }, {
                         field: 'quality',
                         title: '属性',
@@ -92,7 +97,7 @@ jQuery(function($) {
                     }, {
                         field: 'state',
                         title: '状态',
-                        width: 80
+                        width: 60
                     }, {
                         fixed: 'right',
                         width: 165,
@@ -102,6 +107,36 @@ jQuery(function($) {
                 ]
             ]
         });
+
+        // 点击搜索按钮，执行搜索事件，数据表格重载
+        $('#searchBtn').on('click', function() {
+            let searchVal = $('#search').val()
+                //搜索表格重载
+            table.reload('idTest', {
+                url: '/list',
+                // where传给后端的参数
+                where: {
+                    search: true,
+                    searchVal
+                }, //设定异步数据接口的额外参数
+                //,height: 300
+                page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            });
+        });
+
+        $('.layui-body').on('click', 'img', function() {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: `<img src="${this.src}">`
+            });
+        })
+
 
         //监听头工具栏事件
         table.on('toolbar(test)', function(obj) {
@@ -185,7 +220,42 @@ jQuery(function($) {
             var data = obj.data, //获得当前行数据
                 layEvent = obj.event; //获得 lay-event 对应的值
             if (layEvent === 'detail') {
-                layer.msg('查看操作');
+                //查看操作
+                (function notice() {
+                    //示范一个公告层
+                    layer.open({
+                        type: 1, //层类型
+                        title: '商品详情', //标题栏
+                        closeBtn: false,
+                        area: '500px;',
+                        shade: 0.5,
+                        id: 'LAY_layuipro', //设定一个id，防止重复弹出
+                        btn: ['退出'],
+                        btnAlign: 'c',
+                        moveType: 1, //拖拽模式，0或者1
+                        anim: 0, //弹出动画
+                        //内容
+                        content: `<div style="padding: 50px; line-height: 26px; background-color: #393D49; color: #fff; font-weight: 500;">
+                                    <p><span>商品ID：</span><span style="margin-left:34px;">${data._id}</span></p>
+                                    <p><span>商品名称：</span><span style="margin-left:20px;">${data.name}</span></p> 
+                                    <p><span>商品店铺：</span><span style="margin-left:20px;">${data.shop}</span></p> 
+                                    <p><span>商品原价：</span><span style="margin-left:20px;">${data.priceOld}</span></p> 
+                                    <p><span>商品现价：</span><span style="margin-left:20px;">${data.priceNow}</span></p> 
+                                    <p><span>商品分类：</span><span style="margin-left:20px;">${data.classify}</span></p> 
+                                    <p><span>商品数量：</span><span style="margin-left:20px;">${data.stock}</span></p> 
+                                    <p><span>上架时间：</span><span style="margin-left:20px;">${data.time}</span></p> 
+                                    <p><span>商品属性：</span><span style="margin-left:20px;">${data.quality}</span></p>  
+                                    <p><span>商品状态：</span><span style="margin-left:20px;">${data.state}</span></p>          
+                                    <p><span>商品图片：</span><span style="margin-left:20px;"><img src="${data.logo}" style="height:200px;vertical-align:text-top;"\></span></p>      
+                                  </div>`,
+                        success: function(layero) {
+                            var btn = layero.find('.layui-layer-btn');
+                            btn.find('.layui-layer-btn0').attr({
+                                target: '_blank'
+                            });
+                        }
+                    });
+                })();
             } else if (layEvent === 'del') {
                 layer.confirm('真的删除该商品吗！', function(index) {
 

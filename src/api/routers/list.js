@@ -10,7 +10,7 @@ const router = new Router();
  * ctx
  */
 router.get('/', async(ctx, next) => {
-    let { _id, dele, deArr, page, limit } = ctx.query;
+    let { _id, dele, deArr, page, limit, search, searchVal } = ctx.query;
     if (dele == 'true') {
         if (_id) {
             // 删除商品
@@ -33,8 +33,21 @@ router.get('/', async(ctx, next) => {
             ctx.body = 200;
         }
     } else {
-        //查询商品
-        var res = await db.find('goods', {});
+
+        if (search == 'true') {
+            //搜索商品
+            var res = await db.find('goods', {
+                $or: [
+                    { name: { $regex: searchVal, $options: "$i" } },
+                    { shop: { $regex: searchVal, $options: "$i" } },
+                    { stock: { $regex: searchVal, $options: "$i" } }
+                ]
+            });
+        } else {
+            //查询商品
+            var res = await db.find('goods', {});
+        }
+        // 分页
         //0  10  // 10  20 //20  30
         let data = res.slice((page - 1) * limit, page * limit);
         res = {
