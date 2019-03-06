@@ -106,8 +106,6 @@
                     res.state = "下架"
                 }
 
-                console.log(res)
-
                 //向服务端发送添加指令
                 $.ajax({
                     type: "GET",
@@ -128,7 +126,7 @@
                         update: true
                     },
                     success(data) {
-                        console.log(data)
+
                         if (data.ok == 1) {
                             parent.layer.msg('修改成功！', { icon: 6, time: 2000, shade: 0.2 }, function(index) {
                                 location.href = './list.html';
