@@ -8,20 +8,20 @@ var router = new Router();
 router.get('/', async (ctx, next) => {
     // let {page,limit,key} = ctx.request.body;
     // let pages=1;
-    let { username, password, usex, upone, uemail, utext, updat, rander } = ctx.query;
-    
+    let { _id, username,password, usex, upone, uemail, utext, updat, rander } = ctx.query;
+    // console.log(_id);
     if (rander == 'true') {
-        let res = await db.find('user', { username });
+        let res = await db.find('user', { _id: db.ObjectId(_id) });
         ctx.body = {
             code: 0,
             data: res,
             msg: '',
             count: res.length
         }
-    } else  {
+    } else {
         let data = { username, password, usex, upone, uemail, utext };
-        console.log(data)
-        let res=await db.update('user', { username }, { $set: data });
+        console.log(_id)
+        let res=await db.update('user', { _id: db.ObjectId(_id) }, { $set: data });
         ctx.body = {
             code: 0,
             data: res,

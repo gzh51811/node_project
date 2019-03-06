@@ -7,7 +7,7 @@
     <title>登录页</title>
     <link rel="stylesheet" href="../ui//layui/css/layui.css">
     <link rel="stylesheet" href="../ui//layui/css/style.css">
-    <script src="../javascript/jquery-1.10.1.min.js"></script>    
+    <script src="../javascript/jquery-1.10.1.min.js"></script>
 
 </head>
 
@@ -17,12 +17,10 @@
         <header class="layui-elip">登录</header>
         <form class="layui-form">
             <div class="layui-input-inline">
-                <input type="text" name="account" required lay-verify="required" placeholder="用户名" autocomplete="off"
-                    class="layui-input" id="username">
+                <input type="text" name="account" required lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input" id="username">
             </div>
             <div class="layui-input-inline">
-                <input type="password" name="password" required lay-verify="required" placeholder="密码"
-                    autocomplete="off" class="layui-input" id="password">
+                <input type="password" name="password" required lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input" id="password">
             </div>
             <div class="layui-input-inline login-btn">
                 <button lay-submit lay-filter="login" class="layui-btn btnLogin">登录</button>
@@ -39,38 +37,36 @@
     </div>
 
     <script>
-        
-            (()=>{
-            $('.reg').click(()=>{
+        (() => {
+            $('.reg').click(() => {
                 alert("想什么呢，后台能注册");
             })
-            $('.btnLogin').click((event)=>{
+            $('.btnLogin').click((event) => {
                 var username = $('#username').val();
                 var password = $('#password').val();
                 // console.log(typeof(password));
                 $.ajax({
-                    type:'post',
-                    url:'/login',
-                    async:true,
+                    type: 'post',
+                    url: '/login',
+                    async: true,
                     data: {
                         username,
                         password,
                         cost: 1
                     },
-                    success:(res)=>{
-                        
-                        if(res._id){
+                    success: (res) => {
+
+                        if (res._id) {
                             // var username=res.username;
                             // var storage = window.localStorage;
                             // storage.name = username;
                             // console.log(storage.name);
-                            
-                            res=JSON.stringify(res);
-                            localStorage.setItem('user',res);
+
+                            res = JSON.stringify(res);
+                            localStorage.setItem('user', res);
                             let user = localStorage.getItem('user');
-                            console.log(user);
-                            location.href = 'http://localhost:1811';
-                        }else{
+                            location.href = './list.html';
+                        } else {
                             alert('用户名或密码错误');
                         }
                     }
@@ -78,7 +74,6 @@
                 event.preventDefault();
             });
         })();
-
     </script>
 
 </body>

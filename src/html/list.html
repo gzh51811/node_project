@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="../ui/layui/css/layui.css" media="all">
+    <script src="../javascript/jquery-1.10.1.min.js"></script>
+    <script src="../ui/layui/layui.js" charset="utf-8"></script>
+    <script src="../javascript/list.js"></script>
+    <style type="text/css">
+        .laytable-cell-1-logo {
+            height: 100%;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">后台管理系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="">控制台</a></li>
+                <li class="layui-nav-item"><a href="">商品管理</a></li>
+                <li class="layui-nav-item"><a href="">用户</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">其它系统</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">邮件管理</a></dd>
+                        <dd><a href="">消息管理</a></dd>
+                        <dd><a href="">授权管理</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item  user_name">
+                    <a href="javascript:;">登录</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a id="quit">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">所有商品</a>
+                        <dl class="layui-nav-child">
+                            <dd class="layui-this"><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <dd><a>编辑商品</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./userCategory.html">用户列表</a></dd>
+                            <dd><a href="./addUser.html">添加用户</a></dd>
+                        </dl>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./order.html">订单列表</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body" style="padding:15px">
+            <table class="layui-hide" id="demo" lay-filter="test" lay-data="{id: 'idTest'}">
+                <!-- 搜索框 -->
+                <div class="layui-input-inline" style="width:40%;">
+                    <input type="text" placeholder="搜索" class="layui-input" id="search">
+                </div>
+                <button class="layui-btn" id="searchBtn">搜索</button>
+            </table>
+
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail" data-method="notice">查看</a>
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+
+        </div>
+
+    </div>
+    <script>
+        let user = localStorage.getItem('user');
+        if (user == null) {
+            $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+            $('#quit').remove();
+            location.href = './login.html';
+        }
+
+
+        if (!user) {
+            user = {}
+        } else {
+            user = JSON.parse(user);
+        }
+        if (user.token) {
+            $.ajax({
+                type: 'post',
+                url: '/tokenverify',
+                data: {
+                    token: user.token
+                },
+                success: (data) => {
+
+                    if (user.username == 'undefined') {
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+
+                    } else {
+                        $('.user_name>a').html(user.username);
+                    }
+                    $('#quit').on('click', function() {
+                        localStorage.removeItem("user");
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+                        location.href = './login.html';
+                    })
+                }
+
+            });
+        }
+    </script>
+</body>
+
+</html>

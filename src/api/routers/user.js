@@ -7,11 +7,11 @@ var router = new Router();
 
 router.get('/', async (ctx, next) => {
 
-    let { username, page, limit, del } = ctx.query;
+    let {_id, username, page, limit, del } = ctx.query;
     if (del == 'true') {
-        if (username) {
-            console.log(username)
-            await db.delete('user', { username});
+        if (_id) {
+            console.log(_id)
+            await db.delete('user', { _id: db.ObjectId(_id) });
             ctx.body = {
                 code: 0,
             }

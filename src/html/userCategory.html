@@ -10,6 +10,7 @@
     <script src="../ui/layui/layui.js" charset="utf-8"></script>
 
     <style>
+
     </style>
 </head>
 
@@ -52,25 +53,24 @@
 
                     </li>
                     <li class="layui-nav-item ">
-                        <a class="" href="javascript:;">所有商品</a>
+                        <a class="" href="javascript:;">商品管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="list.html">列表一</a></dd>
-                            <dd><a href="">列表二</a></dd>
-                            <dd><a href="">列表三</a></dd>
-                            <dd><a href="">超链接</a></dd>
+                            <dd><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <dd><a>编辑商品</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a class="layui-this" href="userCategory.html">用户列表</a></dd>
-                            <dd><a href="addUser.html">添加用户</a></dd>
+                            <dd><a class="layui-this" href="./userCategory.html">用户列表</a></dd>
+                            <dd><a href="./addUser.html">添加用户</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="order.html">订单列表</a></dd>
+                            <dd><a href="./order.html">订单列表</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -85,24 +85,24 @@
                 <table class="layui-hide" id="test" lay-filter="test"></table>
                 <script type="text/html" id="toolbarDemo">
                     <div class="layui-btn-container">
-                      <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-                      <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-                      
+                        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+                        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+
                     </div>
-                  </script>
+                </script>
 
                 <script type="text/html" id="barDemo">
-                    <a  class="layui-btn layui-btn-xs" lay-event="edit1" >编辑</a>
-				  	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-				</script>
+                    <a class="layui-btn layui-btn-xs" lay-event="edit1">编辑</a>
+                    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+                </script>
                 <script>
-
-                    layui.use('table', function () {
+                    layui.use('table', function(obj) {
                         var table = layui.table;
-
+                        console.log(obj)
+                        // console.log(cols)
                         table.render({
                             elem: '#test',
-                            url: '/user',  //数据接口
+                            url: '/user', //数据接口
                             toolbar: '#toolbarDemo',
                             title: 'user',
                             page: true, //分页
@@ -115,12 +115,35 @@
                             cols: [
                                 [
                                     //表头
-                                    { type: 'checkbox', fixed: 'left' },
-                                    { field: '_id', title: '用户id', width: 110, fixed: 'left', sort: true },
-                                    { field: 'username', title: '用户名', width: 80, fixed: 'left', unresize: true, sort: true },
+                                    {
+                                        type: 'checkbox',
+                                        fixed: 'left'
+                                    }, {
+                                        field: '_id',
+                                        title: '用户id',
+                                        width: 110,
+                                        fixed: 'left',
+                                        sort: true
+                                    }, {
+                                        field: 'username',
+                                        title: '用户名',
+                                        width: 80,
+                                        fixed: 'left',
+                                        unresize: true,
+                                        sort: true
+                                    },
                                     // { field: 'username', title: '用户名', width: 100, edit: 'text' }, 
-                                    { field: 'usex', title: '性别', width: 86, edit: 'text', sort: true },
-                                    { field: 'upone', title: '手机号码', width: 100 },
+                                    {
+                                        field: 'usex',
+                                        title: '性别',
+                                        width: 86,
+                                        edit: 'text',
+                                        sort: true
+                                    }, {
+                                        field: 'upone',
+                                        title: '手机号码',
+                                        width: 100
+                                    },
 
                                     {
                                         field: 'uemail',
@@ -129,106 +152,104 @@
                                         edit: 'text',
                                     },
                                     // { field: 'experience', title: '积分', width: 80, sort: true }, 
-                                    { field: 'add_time', title: '加入时间', width: 120 },
-                                    { field: 'utext', title: '签名' },
-                                    { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+                                    {
+                                        field: 'add_time',
+                                        title: '加入时间',
+                                        width: 120
+                                    }, {
+                                        field: 'utext',
+                                        title: '签名'
+                                    }, {
+                                        fixed: 'right',
+                                        title: '操作',
+                                        toolbar: '#barDemo',
+                                        width: 150
+                                    }
                                 ]
                             ]
 
                         });
 
-                        table.on('checkbox(demo)', function (obj) {
-                            console.log(obj)
-                        });
+                       
                         
                         //监听行工具事件
-                        table.on('tool(test)', function (obj) {
+                        table.on('tool(test)', function(obj) {
                             var data = obj.data;
-                            var username = data.username;
+                            var _id = data._id;
                             var vip = data.vip;
-                            console.log(vip);
-
+                            console.log(obj)
                             // 删除单行
                             if (obj.event === 'del') {
                                 if (vip) {
                                     alert("超级管理员，无法删除");
                                 } else {
-                                    layer.confirm('真的删除当行么', function (index) {
+                                    layer.confirm('真的删除当行么', function(index) {
                                         obj.del();
                                         layer.close(index);
                                         $.ajax({
                                             type: 'get',
                                             url: '/user',
                                             data: {
-                                                username: username,
+                                                _id: _id,
                                                 del: true
                                             },
-                                            success: (data) => {
-                                                console.log(data)
-
-
-                                            }
+                                            success: (data) => {}
 
                                         });
 
                                     });
                                 }
 
-                                console.log(data.username)
                             } else if (obj.event === 'edit1') {
                                 //编辑用户信息
-                                if (data.username == 'cc') {
-                                    alert('超级管理员无法编辑');
-                                } else {
                                     alert('真的要编辑该用户吗');
                                     //点击编辑商品，跳转到编辑页面
-                                    location.href = 'updateuser.html?username=' + data.username;
-                                }
+                                    location.href = 'updateuser.html?_id=' + data._id;
 
                             }
                         });
 
 
-                        var $ = layui.$, active = {
-                            reload: function () {
-                                var demoReload = $('#demoReload');
-                                //执行重载
-                                table.reload('testReload', {
-                                    page: {
-                                        curr: 1 //重新从第 1 页开始
-                                    }
-                                    , where: {
-                                        key: {
-                                            id: demoReload.val()
+                        var $ = layui.$,
+                            active = {
+                                reload: function() {
+                                    var demoReload = $('#demoReload');
+                                    //执行重载
+                                    table.reload('testReload', {
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        },
+                                        where: {
+                                            key: {
+                                                id: demoReload.val()
+                                            }
                                         }
-                                    }
-                                });
-                            }
-                        };
+                                    });
+                                }
+                            };
 
-                        $('.demoTable .layui-btn').on('click', function () {
+                        $('.demoTable .layui-btn').on('click', function() {
                             var type = $(this).data('type');
                             active[type] ? active[type].call(this) : '';
                         });
 
 
                         //监听头工具栏事件
-                        table.on('toolbar(test)', function (obj) {
+                        table.on('toolbar(test)', function(obj) {
                             var obj = obj;
-                            console.log(obj);
-                            var checkStatus = table.checkStatus(obj.config.id)
-                                , data = checkStatus.data; //获取选中的数据
+                            var checkStatus = table.checkStatus(obj.config.id),
+                                data = checkStatus.data; //获取选中的数据
                             switch (obj.event) {
                                 case 'add':
-                                    location.href = 'http://localhost:1811/html/addUser.html';
+                                    location.href = './addUser.html';
                                     break;
                                 case 'delete':
                                     if (data.length === 0) {
                                         layer.msg('请选择一行');
                                     } else {
 
-                                        layer.confirm('真的删除这些行吗', function (index) {
-                                            var username = data.map(function (item) {
+                                        layer.confirm('真的删除这些行吗', function(index) {
+                                            var username = data.map(function(item) {
                                                 return item.username;
                                             });
 
@@ -247,7 +268,11 @@
                                                         success: (data) => {
                                                             if (data.code == 0) {
                                                                 // alert('删除成功')
-                                                                parent.layer.msg('删除成功！', { icon: 6, time: 2000, shade: 0.2 }, function (index) {
+                                                                parent.layer.msg('删除成功！', {
+                                                                    icon: 6,
+                                                                    time: 2000,
+                                                                    shade: 0.2
+                                                                }, function(index) {
                                                                     //一闪而过的提示效果
                                                                     location.reload(true);
                                                                 });
@@ -255,7 +280,7 @@
                                                         }
                                                     });
                                                 }
-                                               
+
                                             }
 
 
@@ -277,9 +302,9 @@
 
                     let user = localStorage.getItem('user');
                     if (user == null) {
-                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
                         $('#quit').remove();
-                        location.href = 'http://localhost:1811/html/login.html';
+                        location.href = './login.html';
                     }
 
 
@@ -287,7 +312,6 @@
                         user = {}
                     } else {
                         user = JSON.parse(user);
-                        console.log(user.token);
                     }
                     if (user.token) {
                         $.ajax({
@@ -297,18 +321,17 @@
                                 token: user.token
                             },
                             success: (data) => {
-                                console.log(user.username);
 
                                 if (user.username == 'undefined') {
-                                    $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                                    $('.user_name>a').html(`<a href="./login.html">登录</a>`);
 
                                 } else {
                                     $('.user_name>a').html(user.username);
                                 }
-                                $('#quit').on('click', function () {
+                                $('#quit').on('click', function() {
                                     localStorage.removeItem("user");
-                                    $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
-                                    location.href = 'http://localhost:1811/html/login.html';
+                                    $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+                                    location.href = './login.html';
                                 })
                             }
 
@@ -329,18 +352,17 @@
 
         <script>
             //JavaScript代码区域
-            layui.use('element', function () {
+            layui.use('element', function() {
                 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
                 //监听导航点击
-                element.on('nav(demo)', function (elem) {
-                    // console.log(elem);
+                element.on('nav(demo)', function(elem) {
                     layer.msg(elem.text());
                 });
             });
         </script>
         <script>
             var _hmt = _hmt || [];
-            (function () {
+            (function() {
 
                 var hm = document.createElement("script");
                 hm.src = "https://hm.baidu.com/hm.js?d214947968792b839fd669a4decaaffc";

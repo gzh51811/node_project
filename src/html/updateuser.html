@@ -56,25 +56,24 @@
 
                     </li>
                     <li class="layui-nav-item ">
-                        <a class="" href="../html/list.html">商品管理</a>
+                        <a>商品管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">列表一</a></dd>
-                            <dd><a href="javascript:;">列表二</a></dd>
-                            <dd><a href="javascript:;">列表三</a></dd>
-                            <dd><a href="">超链接</a></dd>
+                            <dd><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <dd><a>编辑商品</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="userCategory.html">用户列表</a></dd>
-                            <dd><a class="layui-this" href="addUser.html">添加用户</a></dd>
+                            <dd><a href="./userCategory.html">用户列表</a></dd>
+                            <dd><a class="layui-this" href="./addUser.html">添加用户</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="order.html">订单列表</a></dd>
+                            <dd><a href="./order.html">订单列表</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -91,7 +90,7 @@
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-block" style="margin-left:130px;">
                                 <input type="text" name="title" lay-verify="username" autocomplete="off"
-                                    placeholder="请输入用户名" readonly="readonly" class="layui-input uname" maxlength="11">
+                                    placeholder="请输入用户名" class="layui-input uname" maxlength="11">
                             </div>
                         </div>
 
@@ -159,7 +158,6 @@
             var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
             //监听导航点击
             element.on('nav(demo)', function (elem) {
-                // console.log(elem);
                 layer.msg(elem.text());
             });
 
@@ -167,20 +165,19 @@
             form.render();
         });
 
-        var urlname = location.search.slice(1);
-        username = urlname.split('=')[1];
-
+        var _id = location.search.slice(1);
+        _id = _id.split('=')[1];
+        console.log(_id);
         $.ajax({
             type: 'get',
             url: '/updateuser',
             data: {
-                username,
-                rander:true
+                _id,
+                rander: true
             },
             success: (data) => {
                 var res = data.data[0];
 
-                console.log(res.usex)
                 $('.uname').val(res.username);
                 $('.psws').val(res.password);
                 $('.upone').val(res.upone);
@@ -201,13 +198,15 @@
             let usex = $('.usex option:selected').text();
             let uemail = $('.ue-mail').val();
             let utext = $('.utext').val();
-            console.log(username);
-
+            var _id = location.search.slice(1);
+            _id = _id.split('=')[1];
+            console.log(_id);
 
             $.ajax({
                 type: 'get',
                 url: '/updateuser',
                 data: {
+                    _id: _id,
                     username: username,
                     password: psws,
                     upone: upone,
@@ -217,10 +216,9 @@
                     updata: true
                 },
                 success: (data) => {
-                    console.log(data);
                     if (data) {
                         alert('更改成功')
-                        location.href = 'http://localhost:1811/html/userCategory.html';
+                        location.href = './userCategory.html';
                     } else {
                         alert('更改失败')
                     }
@@ -231,9 +229,9 @@
 
         let user = localStorage.getItem('user');
         if (user == null) {
-            $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+            $('.user_name>a').html(`<a href="./login.html">登录</a>`);
             $('#quit').remove();
-            location.href = 'http://localhost:1811/html/login.html';
+            location.href = './login.html';
         }
 
 
@@ -241,7 +239,6 @@
             user = {}
         } else {
             user = JSON.parse(user);
-            console.log(user.token);
         }
         if (user.token) {
             $.ajax({
@@ -251,18 +248,17 @@
                     token: user.token
                 },
                 success: (data) => {
-                    console.log(user.username);
 
                     if (user.username == 'undefined') {
-                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
 
                     } else {
                         $('.user_name>a').html(user.username);
                     }
                     $('#quit').on('click', function () {
                         localStorage.removeItem("user");
-                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
-                        location.href = 'http://localhost:1811/html/login.html';
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+                        location.href = './login.html';
                     })
                 }
 

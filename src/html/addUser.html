@@ -56,25 +56,24 @@
 
                     </li>
                     <li class="layui-nav-item ">
-                        <a class="" href="../html/list.html">商品管理</a>
+                        <a class="" href="javascript:;">商品管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">列表一</a></dd>
-                            <dd><a href="javascript:;">列表二</a></dd>
-                            <dd><a href="javascript:;">列表三</a></dd>
-                            <dd><a href="">超链接</a></dd>
+                            <dd><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <dd><a>编辑商品</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="userCategory.html">用户列表</a></dd>
-                            <dd><a class="layui-this" href="addUser.html">添加用户</a></dd>
+                            <dd><a href="./userCategory.html">用户列表</a></dd>
+                            <dd><a class="layui-this" href="./addUser.html">添加用户</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="order.html">订单列表</a></dd>
+                            <dd><a href="./order.html">订单列表</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -90,16 +89,14 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">用户名</label>
                         <div class="layui-input-block" style="margin-left:130px;">
-                            <input type="text" name="title" lay-verify="username" autocomplete="off"
-                                placeholder="请输入用户名" class="layui-input uname" maxlength="11">
+                            <input type="text" name="title" lay-verify="username" autocomplete="off" placeholder="请输入用户名" class="layui-input uname" maxlength="11">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">密码</label>
                         <div class="layui-input-block" style="margin-left:130px;">
-                            <input type="password" required lay-verify="required|pass" placeholder="请输入密码"
-                                autocomplete="off" class="layui-input psws">
+                            <input type="password" required lay-verify="required|pass" placeholder="请输入密码" autocomplete="off" class="layui-input psws">
                         </div>
                     </div>
                     <div class="layui-form-item" width="800px">
@@ -107,8 +104,7 @@
                             <label class="layui-form-label">手机号</label>
                             <div class="layui-input-inline" style="
                           margin-left: 20px;">
-                                <input type="tel" name="phone" lay-verify="required" autocomplete="off"
-                                    class="layui-input uhone" id="shouji" maxlength="11">
+                                <input type="tel" name="phone" lay-verify="required" autocomplete="off" class="layui-input uhone" id="shouji" maxlength="11">
                             </div>
                         </div>
 
@@ -153,16 +149,15 @@
     <script src="../ui/layui/layui.js" charset="utf-8"></script>
     <script>
         //JavaScript代码区域
-        layui.use(['element', 'form'], function () {
+        layui.use(['element', 'form'], function() {
             var element = layui.element;
-            element.on('nav(demo)', function (elem) {
-                // console.log(elem);
+            element.on('nav(demo)', function(elem) {
                 layer.msg(elem.text());
             });
             var form = layui.form;
             form.render();
         });
-        $('#userbtn').click(function (event) {
+        $('#userbtn').click(function(event) {
             let username = $('.uname').val();
             let psws = $('.psws').val();
             let uhone = $('#shouji').val() * 1;
@@ -170,7 +165,6 @@
             let uemail = $('.ue-mail').val();
             let utext = $('.utext').val();
             event.preventDefault();
-            console.log(usex);
             if (username == 'cc') {
                 alert('和超级管理员名字冲突请换一个')
             } else {
@@ -186,11 +180,9 @@
                         utext: utext
                     },
                     success: (data) => {
-                        console.log(data)
                         if (data) {
-                            console.log(666)
                             alert('添加成功');
-                            location.href = 'http://localhost:1811/html/userCategory.html';
+                            location.href = './userCategory.html';
                         } else {
                             alert('添加失败')
                         }
@@ -203,9 +195,9 @@
 
         let user = localStorage.getItem('user');
         if (user == null) {
-            $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+            $('.user_name>a').html(`<a href="./login.html">登录</a>`);
             $('#quit').remove();
-            location.href = 'http://localhost:1811/html/login.html';
+            location.href = './login.html';
         }
 
 
@@ -213,7 +205,6 @@
             user = {}
         } else {
             user = JSON.parse(user);
-            console.log(user.token);
         }
         if (user.token) {
             $.ajax({
@@ -223,18 +214,17 @@
                     token: user.token
                 },
                 success: (data) => {
-                    console.log(user.username);
 
                     if (user.username == 'undefined') {
-                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
 
                     } else {
                         $('.user_name>a').html(user.username);
                     }
-                    $('#quit').on('click', function () {
+                    $('#quit').on('click', function() {
                         localStorage.removeItem("user");
-                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
-                        location.href = 'http://localhost:1811/html/login.html';
+                        $('.user_name>a').html(`<a href="./login.html">登录</a>`);
+                        location.href = './login.html';
                     })
                 }
 
@@ -243,7 +233,7 @@
     </script>
     <script>
         var _hmt = _hmt || [];
-        (function () {
+        (function() {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?d214947968792b839fd669a4decaaffc";
             // var s = document.getElementsByTagName("script")[0];

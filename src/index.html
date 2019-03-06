@@ -10,6 +10,7 @@
     <script src="../ui/layui/layui.js" charset="utf-8"></script>
 
     <style>
+
     </style>
 </head>
 
@@ -33,7 +34,7 @@
             </ul>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item  user_name">
-                    <a  href="javascript:;">登录</a>
+                    <a href="javascript:;">登录</a>
                     <dl class="layui-nav-child">
                         <dd><a href="">基本资料</a></dd>
                         <dd><a href="">安全设置</a></dd>
@@ -52,24 +53,24 @@
 
                     </li>
                     <li class="layui-nav-item ">
-                        <a class="" href="javascript:;">商品管理</a>
+                        <a class="" href="javascript:;">所有商品</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="html/list.html">商品列表</a></dd>
-                            <dd><a href="">商品分类</a></dd>
-                            <dd><a href="">添加商品</a></dd>
+                            <dd><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                            <dd><a>编辑商品</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
-                        <a href="html/userCategory.html">用户管理</a>
+                        <a href="./userCategory.html">用户管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="html/userCategory.html">用户列表</a></dd>
-                            <dd><a href="html/addUser.html">添加用户</a></dd>
+                            <dd><a href="./userCategory.html">用户列表</a></dd>
+                            <dd><a href="./addUser.html">添加用户</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
                         <a href="javascript:;">订单管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="html/order.html">订单列表</a></dd>
+                            <dd><a href="./order.html">订单列表</a></dd>
                         </dl>
                     </li>
                 </ul>
@@ -97,10 +98,8 @@
                     </div>
                 </div>
                 <script>
-
                     // var storage = window.localStorage;
                     // $('#username a').html(storage.name);
-                    // console.log(storage);
                 </script>
             </div>
         </div>
@@ -114,28 +113,26 @@
 
         <script>
             //JavaScript代码区域
-            layui.use('element', function () {
+            layui.use('element', function() {
                 var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
                 //监听导航点击
-                element.on('nav(demo)', function (elem) {
-                    // console.log(elem);
+                element.on('nav(demo)', function(elem) {
                     layer.msg(elem.text());
                 });
             });
 
             let user = localStorage.getItem('user');
-            if(user==null){
+            if (user == null) {
                 $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
                 $('#quit').remove();
-                location.href='http://localhost:1811/html/login.html';
+                location.href = './login.html';
             }
-            
-           
+
+
             if (!user) {
                 user = {}
             } else {
                 user = JSON.parse(user);
-                console.log(user.token);
             }
             if (user.token) {
                 $.ajax({
@@ -145,18 +142,17 @@
                         token: user.token
                     },
                     success: (data) => {
-                        console.log(user.username);
 
                         if (user.username == 'undefined') {
                             $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
-                            
+
                         } else {
                             $('.user_name>a').html(user.username);
                         }
-                        $('#quit').on('click', function () {
+                        $('#quit').on('click', function() {
                             localStorage.removeItem("user");
                             $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
-                            location.href='http://localhost:1811/html/login.html';
+                            location.href = 'http://localhost:1811/html/login.html';
                         })
                     }
 
@@ -178,7 +174,7 @@
         </script>
         <script>
             var _hmt = _hmt || [];
-            (function () {
+            (function() {
 
                 var hm = document.createElement("script");
                 hm.src = "https://hm.baidu.com/hm.js?d214947968792b839fd669a4decaaffc";
