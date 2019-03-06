@@ -13,7 +13,7 @@ const userRouter = require('./user');
 const adduserRouter = require('./adduser');
 const tokenverifyRouter = require('./tokenverify');
 const updateRouter = require('./updateuser');
-
+const orderRouter = require('./order');
 router.use(koaBody({
     // 支持formdata
     multipart:true,
@@ -40,5 +40,6 @@ router.use('/user',userRouter.routes());
 router.use('/adduser',adduserRouter.routes());
 router.use('/tokenverify',tokenverifyRouter.routes());
 router.use('/updateuser',updateRouter.routes());
+router.use('/order',orderRouter.routes());
 module.exports = router;
 
