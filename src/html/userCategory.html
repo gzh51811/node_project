@@ -249,12 +249,12 @@
                                     } else {
 
                                         layer.confirm('真的删除这些行吗', function(index) {
-                                            var username = data.map(function(item) {
-                                                return item.username;
+                                            var _id = data.map(function(item) {
+                                                return item._id;
                                             });
 
-                                            for (var i = 0; i < username.length; i++) {
-                                                if (username[i] == "cc") {
+                                            for (var i = 0; i < _id.length; i++) {
+                                                if (_id[i] == "cc") {
                                                     alert('用户：cc 为超级管理员，无法删除');
                                                     break; //终止循环
                                                 } else {
@@ -262,7 +262,7 @@
                                                         type: 'get',
                                                         url: '/user',
                                                         data: {
-                                                            username: username[i],
+                                                            _id: _id[i],
                                                             del: true
                                                         },
                                                         success: (data) => {
