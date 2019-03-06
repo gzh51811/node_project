@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>后台管理系统</title>
+    <link rel="stylesheet" href="../ui/layui/css/layui.css" media="all">
+    <script src="../javascript/jquery-1.10.1.min.js"></script>
+    <script src="../ui/layui/layui.js" charset="utf-8"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">后台管理系统</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left" style="margin-top: 20px;">
+                <span class="layui-breadcrumb">
+                    <a href="../index.html">首页</a>
+                    <a href="javascript:;">订单管理</a>
+                    <a href="javascript:;">订单列表</a>
+                </span>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item  user_name">
+                    <a href="javascript:;">登录</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a id="quit">退了</a></li>
+            </ul>
+        </div>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">商品管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="goodList.html">商品列表</a></dd>
+                            <dd><a href="goodsCategory.html">商品分类</a></dd>
+                            <dd><a href="AddGoods.html">添加商品</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="userCategory.html">用户列表</a></dd>
+                            <dd><a href="addUser.html">添加用户</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="order.html">订单列表</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                <table class="layui-hide" id="test" lay-filter="test"></table>
+
+                <script type="text/html" id="barDemo">
+                  <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+                </script>
+                <script>
+                    layui.use('table', function () {
+                        var table = layui.table;
+
+                        table.render({
+                            elem: '#test',
+                            url: '/order',
+                            toolbar: false,
+                            title: '用户数据表',
+                            totalRow: true,
+                            page: false,
+                            cols: [
+                                [
+                                    { type: 'checkbox', fixed: 'left' },
+                                    { templet: '#indexTpl', title: 'ID', width: 80, fixed: 'left', unresize: true },
+                                    { field: 'name', title: '商品分类', edit: 'text' },
+                                    { field: 'price', title: '价格', edit: 'text', sort: true },
+                                    { field: 'num', title: '数量', edit: 'text' },
+                                    { field: 'carriage', title: '运费', edit: 'text' },
+                                    { field: 'total', title: '商品总额', edit: 'text' },
+                                    { field: 'indent', title: '订单总额', edit: 'text' },
+
+                                    { field: 'time', title: '下单时间', width: 120, sort: true },
+                                    { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 80, align: 'center' }
+                                ]
+                            ]
+                        });
+
+
+                        //监听行工具事件
+                        table.on('tool(test)', function (obj) {
+                            var data = obj.data;
+                            console.log(obj.data.id)
+                            var name = data.name;
+                            var id = data.id;
+                            if (obj.event === 'del') {
+
+                                layer.confirm('真的删除行么', function (index) {
+                                    obj.del();
+                                    layer.close(index);
+                                    $.ajax({
+                                        type: "get",//请求方式
+                                        url: "/order",//接口路径
+                                        async: true,//异步
+                                        data: {//传输数据
+                                            id: id,
+                                            name: name,
+                                            dele: 1
+
+                                        },
+                                        success: function (data) {//成功回调
+                                            console.log(data);
+                                        }
+                                    });
+                                });
+                            }
+                        });
+                    });
+                    let user = localStorage.getItem('user');
+                    if (user == null) {
+                        $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                        $('#quit').remove();
+                        location.href = 'http://localhost:1811/html/login.html';
+                    }
+
+
+                    if (!user) {
+                        user = {}
+                    } else {
+                        user = JSON.parse(user);
+                        console.log(user.token);
+                    }
+                    if (user.token) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/tokenverify',
+                            data: {
+                                token: user.token
+                            },
+                            success: (data) => {
+                                console.log(user.username);
+
+                                if (user.username == 'undefined') {
+                                    $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+
+                                } else {
+                                    $('.user_name>a').html(user.username);
+                                }
+                                $('#quit').on('click', function () {
+                                    localStorage.removeItem("user");
+                                    $('.user_name>a').html(`<a href="html/login.html">登录</a>`);
+                                    location.href = 'http://localhost:1811/html/login.html';
+                                })
+                            }
+
+                        });
+                    }
+                </script>
+                <script type="text/html" id="indexTpl">
+                    {{d.LAY_TABLE_INDEX+1}}
+                </script>
+
+            </div>
+        </div>
+        <!--         <div class="layui-footer">
+            底部固定区域
+        </div> -->
+        <script>
+            //JavaScript代码区域
+            layui.use('element', function () {
+                var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+                //监听导航点击
+                element.on('nav(demo)', function (elem) {
+                    console.log(elem);
+                    layer.msg(elem.text());
+                });
+            });
+        </script>
+</body>
+
+</html>
