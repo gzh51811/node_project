@@ -15,7 +15,7 @@ router.post('/',async (ctx,next)=>{
     let {username,password,mdl} = ctx.request.body;
 
     let res = await db.find('user',{username,password});
-    console.log(res[0])
+    console.log(new Date().toLocaleString( ));
     res = res[0];
 
     if(res){

@@ -37,18 +37,6 @@ router.get('/', async (ctx, next) => {
 
 })
 
-// router.get('/username', async (ctx, next) => {
-//     let { username } = ctx.query;
-//     // console.log(username);
-
-
-
-
-// })
-
-
-
-
 
 
 

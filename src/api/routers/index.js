@@ -11,12 +11,8 @@ const listRouter = require('./list');
 const addgoodsRouter = require('./addgoods');
 const uploadRouter = require('./upload');
 const editgoodsRouter = require('./editgoods');
-
-
 const loginRouter = require('./login');
-
 const userRouter = require('./user');
-
 const adduserRouter = require('./adduser');
 const tokenverifyRouter = require('./tokenverify');
 const updateRouter = require('./updateuser');

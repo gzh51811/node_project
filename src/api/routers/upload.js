@@ -6,9 +6,6 @@ const db = require('../db');
 const router = new Router();
 
 
-/**
- * ctx
- */
 router.post('/', async(ctx, next) => {
     ctx.body = JSON.stringify(ctx.request.files);
     var res = {

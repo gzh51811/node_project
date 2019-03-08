@@ -7,7 +7,7 @@ var router = new Router();
 
 router.get('/', async (ctx, next) => {
 
-    let {_id, username, page, limit, del } = ctx.query;
+    let { _id, username, page, limit, del } = ctx.query;
     if (del == 'true') {
         if (_id) {
             console.log(_id)
@@ -33,18 +33,6 @@ router.get('/', async (ctx, next) => {
 
 
 })
-
-// router.get('/username', async (ctx, next) => {
-//     let { username } = ctx.query;
-//     // console.log(username);
-
-
-
-
-// })
-
-
-
 
 
 
